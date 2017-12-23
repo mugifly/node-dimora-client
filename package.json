@@ -1,0 +1,36 @@
+{
+  "name": "dimora-client",
+  "version": "0.1.0",
+  "description": "Unofficial client library for DiMORA",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "eslint .",
+    "test": "echo \"No test specified\"",
+    "postinstall": "cd node_modules/spooky && npm install",
+    "posttest": "npm run doc",
+    "example": "node example.js",
+    "doc": "jsdoc . libs/* --destination docs/ --package package.json --readme README.md --template node_modules/minami --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mugifly/node-dimora-client.git"
+  },
+  "keywords": [
+    "dimora"
+  ],
+  "author": "Masanori Ohgita",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mugifly/node-dimora-client/issues"
+  },
+  "homepage": "https://github.com/mugifly/node-dimora-client#readme",
+  "dependencies": {
+    "nightmare": "^2.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.1.1",
+    "jsdoc": "^3.5.5",
+    "minami": "^1.2.3",
+    "readline-sync": "^1.4.7"
+  }
+}

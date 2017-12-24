@@ -1,0 +1,14 @@
+docs/
+node_modules/
+
+.eslintignore
+.eslintrc
+
+.travis.yml
+
+example.js
+
+npm-debug.log
+tmp-captcha.jpg
+tmp.png
+tmp-*.png

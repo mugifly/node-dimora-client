@@ -6,7 +6,6 @@
   "scripts": {
     "pretest": "eslint .",
     "test": "echo \"No test specified\"",
-    "postinstall": "cd node_modules/spooky && npm install",
     "posttest": "npm run doc",
     "example": "node example.js",
     "doc": "jsdoc . libs/* --destination docs/ --package package.json --readme README.md --template node_modules/minami --verbose"

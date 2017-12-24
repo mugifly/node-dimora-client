@@ -92,7 +92,8 @@ LoginChallenger.prototype.finish = function (login_id, login_pw, captcha_answer,
 		.then((session_data) => {
 
 			// Call the callback
-			return callback(null, JSON.stringify(session_data));
+			const session_json = JSON.stringify(session_data);
+			return callback(null, session_json);
 
 		})
 		.catch((error) => {
@@ -189,6 +190,6 @@ module.exports = LoginChallenger;
  * It has the result of login challenge.
  * @callback LoginChallenger~finishCallback
  * @param {Error} error           An error object (If something happened)
- * @param {String} session_data   A session data<br>
- *  You can skip challenge from next time by use this session data (serialized string).
+ * @param {String} session_json   A session json<br>
+ *  You can skip challenge from next time by use this session json.
  */

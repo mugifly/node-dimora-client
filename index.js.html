@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>index.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DimoraClient.html">DimoraClient</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LoginChallenger.html">LoginChallenger</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LoginChallenger.html#finish">finish</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TvScheduleItem.html">TvScheduleItem</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getBroadcasterName">getBroadcasterName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getEndDate">getEndDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getStartDate">getStartDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getTitle">getTitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getUrl">getUrl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#recordOnce">recordOnce</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TvSchedules.html">TvSchedules</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvSchedules.html#fetch">fetch</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * node-dimora-client -  Unofficial client library for DiMORA
+ * https://github.com/mugifly/node-dimora-client
+ * (C) 2017 - mugifly; Released under MIT License.
+ */
+
+'use strict';
+
+
+const Nightmare = require('nightmare');
+
+
+/**
+ * A constructor to initialize DimoraClient instance.&lt;br>
+ * DimoraClient のインスタンスを初期化するためのコンストラクタ。
+ * @constructor
+ * @param {Object} session_json           A session json.
+ *   It's required when you perform operations requiring membership (such as recording reservation).&lt;br>
+ *   You can get a session data with using {@link LoginChallenger}.&lt;br>
+ *   セッションJSON。録画予約など、ログインした状態で操作を行う際に必要となります。&lt;br>
+ *   セッションJSONの取得は、 {@link LoginChallenger} モジュールにて行なえます。
+ * @param {Object} [options]              An option parameters
+ *
+ * @class Node.js module for DiMORA&lt;br>
+ * DiMORA のための Node.js モジュール
+ */
+const DimoraClient = function (session_json, options = {}) {
+
+	this.BASE_URL = 'https://dimora.jp/';
+
+	// Initialize nightmare
+	this.nightmare = Nightmare({
+		height: 2000
+	});
+
+	// Set the session data to nightmare
+	this.sessionDatas = (session_json) ? JSON.parse(session_json) : [];
+	this.sessionDatas.forEach((session_data, index) => {
+
+		session_data.url = this.BASE_URL;
+		this.nightmare.cookies.set(session_data);
+
+	});
+
+	// Initialize models
+	const TvSchedules = require('./libs/tv-schedules/index');
+
+	/**
+	 * An instance of {@link TvSchedules}.
+	 * It provides methods about the scheduled TV programs.&lt;br>
+	 * {@link TvSchedules} のインスタンス。放送予定のテレビ番組について、情報の取得や録画機能を提供します。
+	 * @type {TvSchedules}
+	 */
+	this.tvSchedules = new TvSchedules(this);
+
+};
+
+
+/**
+ * Get an instance of Nightmare
+ * @private
+ * @return {Nightmare} An instance of the nightmare
+ */
+DimoraClient.prototype._getNightmare = function () {
+
+	return this.nightmare;
+
+};
+
+
+module.exports = DimoraClient;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 24 2017 08:56:40 GMT+0000 (UTC) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

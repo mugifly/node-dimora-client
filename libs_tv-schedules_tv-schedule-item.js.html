@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>libs/tv-schedules/tv-schedule-item.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DimoraClient.html">DimoraClient</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LoginChallenger.html">LoginChallenger</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LoginChallenger.html#finish">finish</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TvScheduleItem.html">TvScheduleItem</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getBroadcasterName">getBroadcasterName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getEndDate">getEndDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getStartDate">getStartDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getTitle">getTitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getUrl">getUrl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#recordOnce">recordOnce</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TvSchedules.html">TvSchedules</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvSchedules.html#fetch">fetch</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">libs/tv-schedules/tv-schedule-item.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+
+const Nightmare = require('nightmare');
+
+
+/**
+ * &lt;p>
+ *   A constructor to initialize TvScheduleItem instance.&lt;br>
+ *   NOTICE: This module is a part of DimoraClient module. You should not to call this constructor as directly.
+ * &lt;/p>
+ * &lt;p>
+ *   TvScheduleItem の インスタンスを初期化するためのコンストラクタ。&lt;br>
+ *   お知らせ: このモジュールは {@link DimoraClient} モジュールの一部です。このコンストラクタは直接呼び出さないでください。
+ * &lt;/p>
+ * @class
+ *  This sub module provides a features about a scheduled TV program.&lt;br>
+ *  このサブモジュールは、放送予定のテレビ番組についての機能を提供します。
+ * @hideconstructor
+ * @param {DimoraClient} client  An instance of DimoraClient module
+ */
+const TvScheduleItem = function (client, item_data) {
+
+	this.client = client;
+
+	this.data = item_data;
+
+	// Fix an url of the item data
+	if (this.data.url) {
+		if (!this.data.url.match(/^(http|https):/)) {
+			this.data.url = this.client.BASE_URL + this.data.url;
+		}
+	}
+
+};
+
+
+/**
+ * A method to get a title of the program&lt;br>
+ * テレビ番組のタイトルを取得するメソッド
+ * @return {String} A title of the program
+ */
+TvScheduleItem.prototype.getTitle = function () {
+
+	return this.data.title;
+
+};
+
+
+/**
+ * A method to get an url of the program&lt;br>
+ * テレビ番組のページURLを取得するメソッド
+ * @return {String} An url of the program
+ */
+TvScheduleItem.prototype.getUrl = function () {
+
+	return this.data.url;
+
+};
+
+
+/**
+ * A method to get a scheduled start date of the program&lt;br>
+ * テレビ番組の放送開始日時を取得するメソッド
+ * @return {Date} A scheduled start date of the program
+ */
+TvScheduleItem.prototype.getStartDate = function () {
+
+	return this.data.startDate;
+
+};
+
+
+/**
+ * A method to get a scheduled end date of the program&lt;br>
+ * テレビ番組の放送終了日時を取得するメソッド
+ * @return {Date} A scheduled end date of the program
+ */
+TvScheduleItem.prototype.getEndDate = function () {
+
+	return this.data.endDate;
+
+};
+
+
+/**
+ * A method to get a name of the broadcaster&lt;br>
+ * テレビ番組の放送局名を取得するメソッド
+ * @return {String} A name of the broadcaster
+ */
+TvScheduleItem.prototype.getBroadcasterName = function () {
+
+	return this.data.broadcasterName;
+
+};
+
+
+/**
+ * A method to make a recording reservation only once&lt;br>
+ * 一度限りの録画予約を行うためのメソッド&lt;br>
+ * @param  {TvSchedule~recordOptions} [options]   An options
+ * @param  {TvSchedule~recordCallback} callback   An callback function
+ */
+TvScheduleItem.prototype.recordOnce = function (options = null, callback) {
+
+	const self = this;
+
+	// Replace arguments
+	if (callback == null) {
+		callback = options;
+	}
+
+	// Execute reservation
+	self.client._getNightmare()
+		// Load the top page
+		.goto(self.getUrl())
+		// Take a screen shot
+		.screenshot('tmp.png')
+		// Input the form
+		.evaluate((options) => {
+
+			// Click a button - 録画予約 (It opens the detail panel)
+			document.getElementById('detailReserveBtn').click();
+
+			// Click a button - 予約
+			window.setTimeout(() => {
+
+				document.querySelector('.reserveSec').querySelector('.reserveBtn').click();
+
+			}, 1000);
+
+		}, options)
+		// Wait until the result is displayed
+		.wait('#reservedEtcText')
+		// Take a screen shot
+		.screenshot('tmp.png')
+		// Fetch the result
+		.evaluate(() => {
+
+			const result_elem = document.querySelector('#reservedEtcText');
+			if (result_elem == null || result_elem.innerText == null) {
+				throw new Error('Unknown result');
+			}
+
+			const result_text = result_elem.innerText;
+			if (result_text.match(!/.*予約済みです/)) {
+				throw new Error('Failed: ' + result_text);
+			}
+
+			// Successful
+			return result_text;
+
+		})
+		.end()
+		.then((result_text) => {
+
+			return callback(null);
+
+		})
+		.catch((error) => {
+
+			return callback(error);
+
+		});
+
+};
+
+
+module.exports = TvScheduleItem;
+
+
+// ----
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 24 2017 08:56:40 GMT+0000 (UTC) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

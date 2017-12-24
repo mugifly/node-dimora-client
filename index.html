@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DimoraClient.html">DimoraClient</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="LoginChallenger.html">LoginChallenger</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="LoginChallenger.html#finish">finish</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TvScheduleItem.html">TvScheduleItem</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getBroadcasterName">getBroadcasterName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getEndDate">getEndDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getStartDate">getStartDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getTitle">getTitle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#getUrl">getUrl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvScheduleItem.html#recordOnce">recordOnce</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TvSchedules.html">TvSchedules</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TvSchedules.html#fetch">fetch</a></span></li>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>node-dimora-client</h1><p>Unofficial client module for DiMORA.
+It works on Node.js v8+.</p>
+<p><a href="https://www.npmjs.com/package/dimora-client"><img src="https://img.shields.io/npm/v/dimora-client.svg?maxAge=2592000" alt="npm"></a>
+<a href="https://travis-ci.org/mugifly/node-dimora-client"><img src="https://travis-ci.org/mugifly/node-dimora-client.svg?branch=master" alt="Build Status"></a></p>
+<hr>
+<h2>Notice</h2><ul>
+<li>This software is published under testing phase.</li>
+<li>This is unofficial software for the convenience of owners (and also Node.js engineers) of the TV-recorders connected with DiMORA.</li>
+<li>I don't any guarantee about this software.</li>
+<li>I don't have any relationship with the company of DiMORA or the vendors of the TV-recorders.</li>
+</ul>
+<hr>
+<h2>Get Started</h2><h3>1. Installation</h3><p>Install this module and additional module for an example code.</p>
+<p><code>$ npm install --save dimora-client readline-sync</code></p>
+<h3>2. Logging-in (Getting Session JSON)</h3><p>This step is required when you perform operations requiring membership on DiMORA (such as recording reservation).</p>
+<pre class="prettyprint source lang-js"><code>const LoginChallenger = require('dimora-client/libs/login-challenger');
+const readlineSync = require('readline-sync');
+
+// TODO: Put your Login ID and Login Password of DiMORA to here
+const YOUR_LOGIN_ID = '';
+const YOUR_LOGIN_PW = '';
+// ------------------------------
+
+// Start a challenge for login
+let loginChallenger = new LoginChallenger((error, captcha_img_buffer) => {
+
+    if (error) {
+        console.error(error);
+        process.exit(1);
+    }
+
+    // Save the CAPTCHA image
+    console.log(`CAPTCHA image was saved to ${__dirname}/tmp-captcha.jpg`);
+    require('fs').writeFileSync(`${__dirname}/tmp-captcha.jpg`, captcha_img_buffer);
+
+    // You need to enter the answer the CAPTCHA image while at this challenge
+    const captcha_answer = readlineSync.question('Input an answer of CAPTCHA: ');
+    console.log(captcha_answer);
+
+    // Finish the challenge with your login ID, password and an answer of CAPTCHA
+    loginChallenger.finish(YOUR_LOGIN_ID, YOUR_LOGIN_PW, captcha_answer, (error, session_json) => {
+
+        if (error) {
+            console.error(error);
+            process.exit(1);
+        }
+
+        // NOTE: You can skip challenge from next time by use this Session JSON
+        console.log(`Your challenge was successful.\n Here is Session JSON: \n---------------\n${session_json}\n`);
+
+    });
+
+});</code></pre><h3>3. Searching for TV Program and Recording Reservation</h3><pre class="prettyprint source lang-js"><code>const DimoraClient = require('dimora-client');
+const readlineSync = require('readline-sync');
+
+// TODO  Put your Session JSON acquired in step 2 to here
+const YOUR_SESSION_JSON = null;
+// ------------------------------
+
+// Initialize the Client with the Session JSON
+const client = new DimoraClient(YOUR_SESSION_JSON);
+
+// Now, you can searching for TV program on DiMORA
+console.log('Let\'s searching TV schedules.');
+const search_keyword = readlineSync.question('Input a keyword: ');
+
+client.tvSchedules.fetch({
+    channelTypes: ['TE', 'BS', 'CS'], // 'TE' (地デジ), 'BS' (BSデジ), 'CS' (CSデジ)
+    keyword: search_keyword
+}, (error, tv_schedules) => {
+
+    if (error) {
+        console.error('error: ', error);
+        process.exit(1);
+    }
+
+    // Display the search results
+    tv_schedules.forEach((tv_schedule, i) => {
+        console.log(`[${i}] ${tv_schedule.getStartDate()} - ${tv_schedule.getTitle()} (${tv_schedule.getBroadcasterName()})`);
+    });
+
+    // Of course, you can also make a Reservation Recording on your recorder
+    console.log('Which programs do you record?');
+    const record_index = readlineSync.question('Input an ID: ');
+
+    if (record_index.match(/^[0-9]+$/) && tv_schedules[parseInt(record_index)]) {
+
+        const tv_schedule = tv_schedules[parseInt(record_index)];
+
+        console.log(`Making reservation... ${tv_schedule.getTitle()}`);
+        tv_schedule.recordOnce((error) => {
+
+            if (error) {
+                console.error('error: ', error);
+                process.exit(1);
+            }
+
+            console.log(`OK! ${tv_schedule.getTitle()} will be recorderd`);
+
+        });
+
+    }
+
+});</code></pre><hr>
+<h2>API Documents</h2><p>https://mugifly.github.io/node-dimora-client/DimoraClient.html</p>
+<hr>
+<h2>Trademarks of Third Party</h2><ul>
+<li>&quot;DiMORA&quot; is a trademark of Panasonic Coporation.</li>
+</ul>
+<hr>
+<h2>License</h2><pre class="prettyprint source"><code>The MIT License (MIT)
+Copyright (c) 2017 Masanori Ohgita</code></pre></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 24 2017 08:56:40 GMT+0000 (UTC) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

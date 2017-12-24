@@ -1,18 +1,15 @@
 language: node_js
 node_js:
-  - "8"
-
+  - '8'
 env:
   global:
-    - secure: dcp6h7znbVNd7Lx/hgUZYxtGNAY9CjwAlJIBQRMVWpjFf6rJxYwhd9yp4T2krHA7dD9l2/9VnsQQhlXwY6FasNxWKvIIhOv7GdSS3lQnvnB2lUfHpObxqNLsDzHT5F1MacbO68BWWrBj0cVCDxODSkCq4O1MXK92jys6vX5uwScNsxMzcqc7kwkzhkish8W6vpo7ybgkjnsBJK575AFJ+uv2mtlG3Ir20x8EEbJ8iFCRWBHAAUjmzbBNKakBKh/ojVimHsgP9WUcD29ESEWJpDOwFfqzpM8Q6wTcxtL8XkFII4hNuvTk+4Kdnn+RmACvNcFMs4+BpsFHEYE1t12FoX4EdZWoSwaC+ooD0+HAMokUI7b0UzMaQIhdI6vkc1ZZrdADoH3RDQzG0b5nh8LRpcJTwAMiw4qjDpNvF1NR5K+akTJhA6H4Z7/dr87W/iJkpVhc4pCbua/ZlJbOtnOvN/VMpHveh/3BDFw0tmnin3o6biQ2nQ9Y3aV7ZIXFSCYRL29ARAyOuzLg/0h1gyQ1oiAsLIt5+NqnY2qJ7N0wCzc1FZDM/cnktv3orRFrizrnY8r9e4OMpkh+Pv3c8DnwQM9VC34MlCUye9mohwAi577mxHMAIIyhHOuKoYN1BNKJSzPnBGJOMjV8BoMu3zdGxXe1Mf8K0SWWIpmfdG04dzM=
-
+    - secure: >-
+        ZxbXZL4KpdP5glVrV1yzuQVupj0UHkdd9EMz+n/Cn2+geCLgaOF82Wd4lKO0xqe4TG78mzrzipA+eO0qpfWZpnitYo9n8eiQYziRyJcEFEW5XEI54bCOfFbkehhOrpeaulfzJrou4NBkELqVN9f6Cqqtjy/8YZmRXS654u7RPU5e1zmiN/NyRds3EvZikhyDqgBABNc1pNHp04MLuPPYmqIQrfR1efBktxlOYHYe5yKPq2qFs5BVFoyd2DhJZlcSrLFGi1DZbFSsmUgmPWxQHu9bV82lgyceJI3PZ6Ttaa+ann+YEn4hd6ZCXtCm9KEBkfZTbdOfRTMXysCzkX2nZJfqcLFdRIQiKFICI4+dugtTndcATFUgMIGNLgYQ8OzEtij+EGbqzePZSqaLX7D7cBoaTnMrmZjqqEcDGUsY5pLb8ltWCLcave9NPSft3dW87dLr0X/ThenpGAO7KcfY48WzgDRduNwG4duGxoaGNP2/t4Nv5U08mS+UA+ffrmquc6ppW0NMRd8Enn0E9+fsdffn0KAudRTArhyzAqmk2c7eDKMAcOjSwLMRjkmu9PSvuRTSc0qe1ZaJfieav33JKhOcGEd07WF8DcpopFTP/8DeAPy+4PW9QB1LkxnCMgfhSsMlv5vyesYCY/QLBUn3SXkhPWaIPv+GDuT/wtatrmw=
 install:
   - npm install
-
 script:
   - npm test
   - npm run doc
-
 after_success:
   - git config user.name "Travis-CI"
   - git config user.email "mugifly@github.io"
@@ -21,4 +18,7 @@ after_success:
   - cp docs/dimora-client/*.*.*/* . -R
   - git add *.html && git add scripts/ && git add fonts/ && git add styles/
   - git commit -m 'Update documents'
-  - '[ "$TRAVIS_BRANCH" == "master" ] && [ $GITHUB_TOKEN ] && git push --quiet --force https://$GITHUB_TOKEN@github.com/mugifly/node-dimora-client.git gh-pages 2> /dev/null'
+  - >-
+    [ "$TRAVIS_BRANCH" == "master" ] && [ $GITHUB_TOKEN ] && git push --quiet
+    --force https://$GITHUB_TOKEN@github.com/mugifly/node-dimora-client.git
+    gh-pages 2> /dev/null

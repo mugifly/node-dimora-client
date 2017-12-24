@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - "8"
+
+env:
+  global:
+    - secure: dcp6h7znbVNd7Lx/hgUZYxtGNAY9CjwAlJIBQRMVWpjFf6rJxYwhd9yp4T2krHA7dD9l2/9VnsQQhlXwY6FasNxWKvIIhOv7GdSS3lQnvnB2lUfHpObxqNLsDzHT5F1MacbO68BWWrBj0cVCDxODSkCq4O1MXK92jys6vX5uwScNsxMzcqc7kwkzhkish8W6vpo7ybgkjnsBJK575AFJ+uv2mtlG3Ir20x8EEbJ8iFCRWBHAAUjmzbBNKakBKh/ojVimHsgP9WUcD29ESEWJpDOwFfqzpM8Q6wTcxtL8XkFII4hNuvTk+4Kdnn+RmACvNcFMs4+BpsFHEYE1t12FoX4EdZWoSwaC+ooD0+HAMokUI7b0UzMaQIhdI6vkc1ZZrdADoH3RDQzG0b5nh8LRpcJTwAMiw4qjDpNvF1NR5K+akTJhA6H4Z7/dr87W/iJkpVhc4pCbua/ZlJbOtnOvN/VMpHveh/3BDFw0tmnin3o6biQ2nQ9Y3aV7ZIXFSCYRL29ARAyOuzLg/0h1gyQ1oiAsLIt5+NqnY2qJ7N0wCzc1FZDM/cnktv3orRFrizrnY8r9e4OMpkh+Pv3c8DnwQM9VC34MlCUye9mohwAi577mxHMAIIyhHOuKoYN1BNKJSzPnBGJOMjV8BoMu3zdGxXe1Mf8K0SWWIpmfdG04dzM=
+
+install:
+  - npm install
+
+script:
+  - npm test
+  - npm run doc
+
+after_success:
+  - git config user.name "Travis-CI"
+  - git config user.email "mugifly@github.io"
+  - git checkout --orphan gh-pages
+  - git rm --cached -rf .
+  - cp docs/dimora-client/*.*.*/* . -R
+  - git add *.html && git add scripts/ && git add fonts/ && git add styles/
+  - git commit -m 'Update documents'
+  - '[ "$TRAVIS_BRANCH" == "master" ] && [ $GITHUB_TOKEN ] && git push --quiet --force https://$GITHUB_TOKEN@github.com/mugifly/node-dimora-client.git gh-pages 2> /dev/null'

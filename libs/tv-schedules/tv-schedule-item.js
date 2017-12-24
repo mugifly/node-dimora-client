@@ -166,19 +166,6 @@ TvScheduleItem.prototype.recordOnce = function (options = null, callback) {
 };
 
 
-/**
- * A method to make a recurring recording reservation<br>
- * 毎週の録画予約を行うためのメソッド<br>
- * @param  {TvSchedule~recordOptions} options     An options
- * @param  {TvSchedule~recordCallback} callback   An callback function
- */
-TvScheduleItem.prototype.recordRecurring = function (filter = {}, callback) {
-
-	const self = this;
-
-};
-
-
 module.exports = TvScheduleItem;
 
 
